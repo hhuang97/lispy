@@ -1,0 +1,601 @@
+Created by PLY version 3.8 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> expr
+Rule 1     expr -> atom
+Rule 2     expr -> defun
+Rule 3     expr -> set
+Rule 4     expr -> func_call
+Rule 5     expr -> list
+Rule 6     func_call -> LPAREN ID exprseq RPAREN
+Rule 7     ids -> ID
+Rule 8     ids -> ID ids
+Rule 9     atom -> BOOL
+Rule 10    atom -> STRING
+Rule 11    atom -> INT
+Rule 12    atom -> FLOAT
+Rule 13    atom -> ID
+Rule 14    exprseq -> expr
+Rule 15    exprseq -> expr exprseq
+Rule 16    list -> LPAREN exprseq RPAREN
+Rule 17    list -> LPAREN RPAREN
+Rule 18    defun -> LPAREN DEFUN ID LPAREN ids RPAREN exprseq RPAREN
+Rule 19    set -> LPAREN SET ID expr RPAREN
+
+Terminals, with rules where they appear
+
+BOOL                 : 9
+DEFUN                : 18
+FLOAT                : 12
+ID                   : 6 7 8 13 18 19
+INT                  : 11
+LPAREN               : 6 16 17 18 18 19
+RPAREN               : 6 16 17 18 18 19
+SET                  : 19
+STRING               : 10
+error                : 
+
+Nonterminals, with rules where they appear
+
+atom                 : 1
+defun                : 2
+expr                 : 14 15 19 0
+exprseq              : 6 15 16 18
+func_call            : 4
+ids                  : 8 18
+list                 : 5
+set                  : 3
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . expr
+    (1) expr -> . atom
+    (2) expr -> . defun
+    (3) expr -> . set
+    (4) expr -> . func_call
+    (5) expr -> . list
+    (9) atom -> . BOOL
+    (10) atom -> . STRING
+    (11) atom -> . INT
+    (12) atom -> . FLOAT
+    (13) atom -> . ID
+    (18) defun -> . LPAREN DEFUN ID LPAREN ids RPAREN exprseq RPAREN
+    (19) set -> . LPAREN SET ID expr RPAREN
+    (6) func_call -> . LPAREN ID exprseq RPAREN
+    (16) list -> . LPAREN exprseq RPAREN
+    (17) list -> . LPAREN RPAREN
+
+    BOOL            shift and go to state 3
+    STRING          shift and go to state 12
+    INT             shift and go to state 1
+    FLOAT           shift and go to state 2
+    ID              shift and go to state 9
+    LPAREN          shift and go to state 6
+
+    func_call                      shift and go to state 7
+    list                           shift and go to state 8
+    defun                          shift and go to state 11
+    expr                           shift and go to state 4
+    atom                           shift and go to state 10
+    set                            shift and go to state 5
+
+state 1
+
+    (11) atom -> INT .
+
+    BOOL            reduce using rule 11 (atom -> INT .)
+    STRING          reduce using rule 11 (atom -> INT .)
+    INT             reduce using rule 11 (atom -> INT .)
+    FLOAT           reduce using rule 11 (atom -> INT .)
+    ID              reduce using rule 11 (atom -> INT .)
+    LPAREN          reduce using rule 11 (atom -> INT .)
+    RPAREN          reduce using rule 11 (atom -> INT .)
+    $end            reduce using rule 11 (atom -> INT .)
+
+
+state 2
+
+    (12) atom -> FLOAT .
+
+    BOOL            reduce using rule 12 (atom -> FLOAT .)
+    STRING          reduce using rule 12 (atom -> FLOAT .)
+    INT             reduce using rule 12 (atom -> FLOAT .)
+    FLOAT           reduce using rule 12 (atom -> FLOAT .)
+    ID              reduce using rule 12 (atom -> FLOAT .)
+    LPAREN          reduce using rule 12 (atom -> FLOAT .)
+    RPAREN          reduce using rule 12 (atom -> FLOAT .)
+    $end            reduce using rule 12 (atom -> FLOAT .)
+
+
+state 3
+
+    (9) atom -> BOOL .
+
+    BOOL            reduce using rule 9 (atom -> BOOL .)
+    STRING          reduce using rule 9 (atom -> BOOL .)
+    INT             reduce using rule 9 (atom -> BOOL .)
+    FLOAT           reduce using rule 9 (atom -> BOOL .)
+    ID              reduce using rule 9 (atom -> BOOL .)
+    LPAREN          reduce using rule 9 (atom -> BOOL .)
+    RPAREN          reduce using rule 9 (atom -> BOOL .)
+    $end            reduce using rule 9 (atom -> BOOL .)
+
+
+state 4
+
+    (0) S' -> expr .
+
+
+
+state 5
+
+    (3) expr -> set .
+
+    BOOL            reduce using rule 3 (expr -> set .)
+    STRING          reduce using rule 3 (expr -> set .)
+    INT             reduce using rule 3 (expr -> set .)
+    FLOAT           reduce using rule 3 (expr -> set .)
+    ID              reduce using rule 3 (expr -> set .)
+    LPAREN          reduce using rule 3 (expr -> set .)
+    RPAREN          reduce using rule 3 (expr -> set .)
+    $end            reduce using rule 3 (expr -> set .)
+
+
+state 6
+
+    (18) defun -> LPAREN . DEFUN ID LPAREN ids RPAREN exprseq RPAREN
+    (19) set -> LPAREN . SET ID expr RPAREN
+    (6) func_call -> LPAREN . ID exprseq RPAREN
+    (16) list -> LPAREN . exprseq RPAREN
+    (17) list -> LPAREN . RPAREN
+    (14) exprseq -> . expr
+    (15) exprseq -> . expr exprseq
+    (1) expr -> . atom
+    (2) expr -> . defun
+    (3) expr -> . set
+    (4) expr -> . func_call
+    (5) expr -> . list
+    (9) atom -> . BOOL
+    (10) atom -> . STRING
+    (11) atom -> . INT
+    (12) atom -> . FLOAT
+    (13) atom -> . ID
+    (18) defun -> . LPAREN DEFUN ID LPAREN ids RPAREN exprseq RPAREN
+    (19) set -> . LPAREN SET ID expr RPAREN
+    (6) func_call -> . LPAREN ID exprseq RPAREN
+    (16) list -> . LPAREN exprseq RPAREN
+    (17) list -> . LPAREN RPAREN
+
+    DEFUN           shift and go to state 18
+    SET             shift and go to state 13
+    ID              shift and go to state 15
+    RPAREN          shift and go to state 17
+    BOOL            shift and go to state 3
+    STRING          shift and go to state 12
+    INT             shift and go to state 1
+    FLOAT           shift and go to state 2
+    LPAREN          shift and go to state 6
+
+    func_call                      shift and go to state 7
+    list                           shift and go to state 8
+    exprseq                        shift and go to state 14
+    defun                          shift and go to state 11
+    expr                           shift and go to state 16
+    atom                           shift and go to state 10
+    set                            shift and go to state 5
+
+state 7
+
+    (4) expr -> func_call .
+
+    BOOL            reduce using rule 4 (expr -> func_call .)
+    STRING          reduce using rule 4 (expr -> func_call .)
+    INT             reduce using rule 4 (expr -> func_call .)
+    FLOAT           reduce using rule 4 (expr -> func_call .)
+    ID              reduce using rule 4 (expr -> func_call .)
+    LPAREN          reduce using rule 4 (expr -> func_call .)
+    RPAREN          reduce using rule 4 (expr -> func_call .)
+    $end            reduce using rule 4 (expr -> func_call .)
+
+
+state 8
+
+    (5) expr -> list .
+
+    BOOL            reduce using rule 5 (expr -> list .)
+    STRING          reduce using rule 5 (expr -> list .)
+    INT             reduce using rule 5 (expr -> list .)
+    FLOAT           reduce using rule 5 (expr -> list .)
+    ID              reduce using rule 5 (expr -> list .)
+    LPAREN          reduce using rule 5 (expr -> list .)
+    RPAREN          reduce using rule 5 (expr -> list .)
+    $end            reduce using rule 5 (expr -> list .)
+
+
+state 9
+
+    (13) atom -> ID .
+
+    RPAREN          reduce using rule 13 (atom -> ID .)
+    BOOL            reduce using rule 13 (atom -> ID .)
+    STRING          reduce using rule 13 (atom -> ID .)
+    INT             reduce using rule 13 (atom -> ID .)
+    FLOAT           reduce using rule 13 (atom -> ID .)
+    ID              reduce using rule 13 (atom -> ID .)
+    LPAREN          reduce using rule 13 (atom -> ID .)
+    $end            reduce using rule 13 (atom -> ID .)
+
+
+state 10
+
+    (1) expr -> atom .
+
+    BOOL            reduce using rule 1 (expr -> atom .)
+    STRING          reduce using rule 1 (expr -> atom .)
+    INT             reduce using rule 1 (expr -> atom .)
+    FLOAT           reduce using rule 1 (expr -> atom .)
+    ID              reduce using rule 1 (expr -> atom .)
+    LPAREN          reduce using rule 1 (expr -> atom .)
+    RPAREN          reduce using rule 1 (expr -> atom .)
+    $end            reduce using rule 1 (expr -> atom .)
+
+
+state 11
+
+    (2) expr -> defun .
+
+    BOOL            reduce using rule 2 (expr -> defun .)
+    STRING          reduce using rule 2 (expr -> defun .)
+    INT             reduce using rule 2 (expr -> defun .)
+    FLOAT           reduce using rule 2 (expr -> defun .)
+    ID              reduce using rule 2 (expr -> defun .)
+    LPAREN          reduce using rule 2 (expr -> defun .)
+    RPAREN          reduce using rule 2 (expr -> defun .)
+    $end            reduce using rule 2 (expr -> defun .)
+
+
+state 12
+
+    (10) atom -> STRING .
+
+    BOOL            reduce using rule 10 (atom -> STRING .)
+    STRING          reduce using rule 10 (atom -> STRING .)
+    INT             reduce using rule 10 (atom -> STRING .)
+    FLOAT           reduce using rule 10 (atom -> STRING .)
+    ID              reduce using rule 10 (atom -> STRING .)
+    LPAREN          reduce using rule 10 (atom -> STRING .)
+    RPAREN          reduce using rule 10 (atom -> STRING .)
+    $end            reduce using rule 10 (atom -> STRING .)
+
+
+state 13
+
+    (19) set -> LPAREN SET . ID expr RPAREN
+
+    ID              shift and go to state 19
+
+
+state 14
+
+    (16) list -> LPAREN exprseq . RPAREN
+
+    RPAREN          shift and go to state 20
+
+
+state 15
+
+    (6) func_call -> LPAREN ID . exprseq RPAREN
+    (13) atom -> ID .
+    (14) exprseq -> . expr
+    (15) exprseq -> . expr exprseq
+    (1) expr -> . atom
+    (2) expr -> . defun
+    (3) expr -> . set
+    (4) expr -> . func_call
+    (5) expr -> . list
+    (9) atom -> . BOOL
+    (10) atom -> . STRING
+    (11) atom -> . INT
+    (12) atom -> . FLOAT
+    (13) atom -> . ID
+    (18) defun -> . LPAREN DEFUN ID LPAREN ids RPAREN exprseq RPAREN
+    (19) set -> . LPAREN SET ID expr RPAREN
+    (6) func_call -> . LPAREN ID exprseq RPAREN
+    (16) list -> . LPAREN exprseq RPAREN
+    (17) list -> . LPAREN RPAREN
+
+  ! shift/reduce conflict for BOOL resolved as shift
+  ! shift/reduce conflict for STRING resolved as shift
+  ! shift/reduce conflict for INT resolved as shift
+  ! shift/reduce conflict for FLOAT resolved as shift
+  ! shift/reduce conflict for ID resolved as shift
+  ! shift/reduce conflict for LPAREN resolved as shift
+    RPAREN          reduce using rule 13 (atom -> ID .)
+    BOOL            shift and go to state 3
+    STRING          shift and go to state 12
+    INT             shift and go to state 1
+    FLOAT           shift and go to state 2
+    ID              shift and go to state 9
+    LPAREN          shift and go to state 6
+
+  ! BOOL            [ reduce using rule 13 (atom -> ID .) ]
+  ! STRING          [ reduce using rule 13 (atom -> ID .) ]
+  ! INT             [ reduce using rule 13 (atom -> ID .) ]
+  ! FLOAT           [ reduce using rule 13 (atom -> ID .) ]
+  ! ID              [ reduce using rule 13 (atom -> ID .) ]
+  ! LPAREN          [ reduce using rule 13 (atom -> ID .) ]
+
+    func_call                      shift and go to state 7
+    list                           shift and go to state 8
+    exprseq                        shift and go to state 21
+    defun                          shift and go to state 11
+    expr                           shift and go to state 16
+    atom                           shift and go to state 10
+    set                            shift and go to state 5
+
+state 16
+
+    (14) exprseq -> expr .
+    (15) exprseq -> expr . exprseq
+    (14) exprseq -> . expr
+    (15) exprseq -> . expr exprseq
+    (1) expr -> . atom
+    (2) expr -> . defun
+    (3) expr -> . set
+    (4) expr -> . func_call
+    (5) expr -> . list
+    (9) atom -> . BOOL
+    (10) atom -> . STRING
+    (11) atom -> . INT
+    (12) atom -> . FLOAT
+    (13) atom -> . ID
+    (18) defun -> . LPAREN DEFUN ID LPAREN ids RPAREN exprseq RPAREN
+    (19) set -> . LPAREN SET ID expr RPAREN
+    (6) func_call -> . LPAREN ID exprseq RPAREN
+    (16) list -> . LPAREN exprseq RPAREN
+    (17) list -> . LPAREN RPAREN
+
+    RPAREN          reduce using rule 14 (exprseq -> expr .)
+    BOOL            shift and go to state 3
+    STRING          shift and go to state 12
+    INT             shift and go to state 1
+    FLOAT           shift and go to state 2
+    ID              shift and go to state 9
+    LPAREN          shift and go to state 6
+
+    func_call                      shift and go to state 7
+    list                           shift and go to state 8
+    exprseq                        shift and go to state 22
+    defun                          shift and go to state 11
+    expr                           shift and go to state 16
+    atom                           shift and go to state 10
+    set                            shift and go to state 5
+
+state 17
+
+    (17) list -> LPAREN RPAREN .
+
+    BOOL            reduce using rule 17 (list -> LPAREN RPAREN .)
+    STRING          reduce using rule 17 (list -> LPAREN RPAREN .)
+    INT             reduce using rule 17 (list -> LPAREN RPAREN .)
+    FLOAT           reduce using rule 17 (list -> LPAREN RPAREN .)
+    ID              reduce using rule 17 (list -> LPAREN RPAREN .)
+    LPAREN          reduce using rule 17 (list -> LPAREN RPAREN .)
+    RPAREN          reduce using rule 17 (list -> LPAREN RPAREN .)
+    $end            reduce using rule 17 (list -> LPAREN RPAREN .)
+
+
+state 18
+
+    (18) defun -> LPAREN DEFUN . ID LPAREN ids RPAREN exprseq RPAREN
+
+    ID              shift and go to state 23
+
+
+state 19
+
+    (19) set -> LPAREN SET ID . expr RPAREN
+    (1) expr -> . atom
+    (2) expr -> . defun
+    (3) expr -> . set
+    (4) expr -> . func_call
+    (5) expr -> . list
+    (9) atom -> . BOOL
+    (10) atom -> . STRING
+    (11) atom -> . INT
+    (12) atom -> . FLOAT
+    (13) atom -> . ID
+    (18) defun -> . LPAREN DEFUN ID LPAREN ids RPAREN exprseq RPAREN
+    (19) set -> . LPAREN SET ID expr RPAREN
+    (6) func_call -> . LPAREN ID exprseq RPAREN
+    (16) list -> . LPAREN exprseq RPAREN
+    (17) list -> . LPAREN RPAREN
+
+    BOOL            shift and go to state 3
+    STRING          shift and go to state 12
+    INT             shift and go to state 1
+    FLOAT           shift and go to state 2
+    ID              shift and go to state 9
+    LPAREN          shift and go to state 6
+
+    func_call                      shift and go to state 7
+    list                           shift and go to state 8
+    defun                          shift and go to state 11
+    expr                           shift and go to state 24
+    atom                           shift and go to state 10
+    set                            shift and go to state 5
+
+state 20
+
+    (16) list -> LPAREN exprseq RPAREN .
+
+    BOOL            reduce using rule 16 (list -> LPAREN exprseq RPAREN .)
+    STRING          reduce using rule 16 (list -> LPAREN exprseq RPAREN .)
+    INT             reduce using rule 16 (list -> LPAREN exprseq RPAREN .)
+    FLOAT           reduce using rule 16 (list -> LPAREN exprseq RPAREN .)
+    ID              reduce using rule 16 (list -> LPAREN exprseq RPAREN .)
+    LPAREN          reduce using rule 16 (list -> LPAREN exprseq RPAREN .)
+    RPAREN          reduce using rule 16 (list -> LPAREN exprseq RPAREN .)
+    $end            reduce using rule 16 (list -> LPAREN exprseq RPAREN .)
+
+
+state 21
+
+    (6) func_call -> LPAREN ID exprseq . RPAREN
+
+    RPAREN          shift and go to state 25
+
+
+state 22
+
+    (15) exprseq -> expr exprseq .
+
+    RPAREN          reduce using rule 15 (exprseq -> expr exprseq .)
+
+
+state 23
+
+    (18) defun -> LPAREN DEFUN ID . LPAREN ids RPAREN exprseq RPAREN
+
+    LPAREN          shift and go to state 26
+
+
+state 24
+
+    (19) set -> LPAREN SET ID expr . RPAREN
+
+    RPAREN          shift and go to state 27
+
+
+state 25
+
+    (6) func_call -> LPAREN ID exprseq RPAREN .
+
+    BOOL            reduce using rule 6 (func_call -> LPAREN ID exprseq RPAREN .)
+    STRING          reduce using rule 6 (func_call -> LPAREN ID exprseq RPAREN .)
+    INT             reduce using rule 6 (func_call -> LPAREN ID exprseq RPAREN .)
+    FLOAT           reduce using rule 6 (func_call -> LPAREN ID exprseq RPAREN .)
+    ID              reduce using rule 6 (func_call -> LPAREN ID exprseq RPAREN .)
+    LPAREN          reduce using rule 6 (func_call -> LPAREN ID exprseq RPAREN .)
+    RPAREN          reduce using rule 6 (func_call -> LPAREN ID exprseq RPAREN .)
+    $end            reduce using rule 6 (func_call -> LPAREN ID exprseq RPAREN .)
+
+
+state 26
+
+    (18) defun -> LPAREN DEFUN ID LPAREN . ids RPAREN exprseq RPAREN
+    (7) ids -> . ID
+    (8) ids -> . ID ids
+
+    ID              shift and go to state 28
+
+    ids                            shift and go to state 29
+
+state 27
+
+    (19) set -> LPAREN SET ID expr RPAREN .
+
+    BOOL            reduce using rule 19 (set -> LPAREN SET ID expr RPAREN .)
+    STRING          reduce using rule 19 (set -> LPAREN SET ID expr RPAREN .)
+    INT             reduce using rule 19 (set -> LPAREN SET ID expr RPAREN .)
+    FLOAT           reduce using rule 19 (set -> LPAREN SET ID expr RPAREN .)
+    ID              reduce using rule 19 (set -> LPAREN SET ID expr RPAREN .)
+    LPAREN          reduce using rule 19 (set -> LPAREN SET ID expr RPAREN .)
+    RPAREN          reduce using rule 19 (set -> LPAREN SET ID expr RPAREN .)
+    $end            reduce using rule 19 (set -> LPAREN SET ID expr RPAREN .)
+
+
+state 28
+
+    (7) ids -> ID .
+    (8) ids -> ID . ids
+    (7) ids -> . ID
+    (8) ids -> . ID ids
+
+    RPAREN          reduce using rule 7 (ids -> ID .)
+    ID              shift and go to state 28
+
+    ids                            shift and go to state 30
+
+state 29
+
+    (18) defun -> LPAREN DEFUN ID LPAREN ids . RPAREN exprseq RPAREN
+
+    RPAREN          shift and go to state 31
+
+
+state 30
+
+    (8) ids -> ID ids .
+
+    RPAREN          reduce using rule 8 (ids -> ID ids .)
+
+
+state 31
+
+    (18) defun -> LPAREN DEFUN ID LPAREN ids RPAREN . exprseq RPAREN
+    (14) exprseq -> . expr
+    (15) exprseq -> . expr exprseq
+    (1) expr -> . atom
+    (2) expr -> . defun
+    (3) expr -> . set
+    (4) expr -> . func_call
+    (5) expr -> . list
+    (9) atom -> . BOOL
+    (10) atom -> . STRING
+    (11) atom -> . INT
+    (12) atom -> . FLOAT
+    (13) atom -> . ID
+    (18) defun -> . LPAREN DEFUN ID LPAREN ids RPAREN exprseq RPAREN
+    (19) set -> . LPAREN SET ID expr RPAREN
+    (6) func_call -> . LPAREN ID exprseq RPAREN
+    (16) list -> . LPAREN exprseq RPAREN
+    (17) list -> . LPAREN RPAREN
+
+    BOOL            shift and go to state 3
+    STRING          shift and go to state 12
+    INT             shift and go to state 1
+    FLOAT           shift and go to state 2
+    ID              shift and go to state 9
+    LPAREN          shift and go to state 6
+
+    func_call                      shift and go to state 7
+    list                           shift and go to state 8
+    exprseq                        shift and go to state 32
+    defun                          shift and go to state 11
+    expr                           shift and go to state 16
+    atom                           shift and go to state 10
+    set                            shift and go to state 5
+
+state 32
+
+    (18) defun -> LPAREN DEFUN ID LPAREN ids RPAREN exprseq . RPAREN
+
+    RPAREN          shift and go to state 33
+
+
+state 33
+
+    (18) defun -> LPAREN DEFUN ID LPAREN ids RPAREN exprseq RPAREN .
+
+    BOOL            reduce using rule 18 (defun -> LPAREN DEFUN ID LPAREN ids RPAREN exprseq RPAREN .)
+    STRING          reduce using rule 18 (defun -> LPAREN DEFUN ID LPAREN ids RPAREN exprseq RPAREN .)
+    INT             reduce using rule 18 (defun -> LPAREN DEFUN ID LPAREN ids RPAREN exprseq RPAREN .)
+    FLOAT           reduce using rule 18 (defun -> LPAREN DEFUN ID LPAREN ids RPAREN exprseq RPAREN .)
+    ID              reduce using rule 18 (defun -> LPAREN DEFUN ID LPAREN ids RPAREN exprseq RPAREN .)
+    LPAREN          reduce using rule 18 (defun -> LPAREN DEFUN ID LPAREN ids RPAREN exprseq RPAREN .)
+    RPAREN          reduce using rule 18 (defun -> LPAREN DEFUN ID LPAREN ids RPAREN exprseq RPAREN .)
+    $end            reduce using rule 18 (defun -> LPAREN DEFUN ID LPAREN ids RPAREN exprseq RPAREN .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for BOOL in state 15 resolved as shift
+WARNING: shift/reduce conflict for STRING in state 15 resolved as shift
+WARNING: shift/reduce conflict for INT in state 15 resolved as shift
+WARNING: shift/reduce conflict for FLOAT in state 15 resolved as shift
+WARNING: shift/reduce conflict for ID in state 15 resolved as shift
+WARNING: shift/reduce conflict for LPAREN in state 15 resolved as shift

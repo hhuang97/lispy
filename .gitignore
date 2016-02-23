@@ -1,0 +1,4 @@
+src/parsetab.py
+src/parser.out
+src/__pycache__
+src/__pycache__/*
