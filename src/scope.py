@@ -4,4 +4,8 @@ class scope:
         self._defins = defs
 
     def get(self, thing):
+        # TODO add custom error handling
         return self._defins[thing]
+
+    def add(self, name, val):
+        self._defins[name] = val
