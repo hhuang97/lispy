@@ -1,10 +1,6 @@
-import pprint
-
 from ply import lex, yacc
 
-from shared import Syn
-
-P = pprint.PrettyPrinter(indent=4)
+from shared import get_syn
 
 class lispy_parser(object):
     def __init__(self, lex_kwargs=None, yacc_kwargs=None):
@@ -17,9 +13,6 @@ class lispy_parser(object):
         result = self._parser.parse(input_text, lexer=self._lexer)
         return result
 
-    def get_syn(self, tok, s_type, s_value):
-        return Syn(s_type, s_value)
-
     tokens = (
         'STRING',
         'BOOL',
@@ -28,7 +21,7 @@ class lispy_parser(object):
         'LPAREN',
         'RPAREN',
         'DEFUN',
-        'SET',
+        'LET',
         'ID'
         # 'SQUOTE',
         # 'COMMENT'
@@ -54,22 +47,22 @@ class lispy_parser(object):
 
     def t_STRING(self, t):
         r'"([^"]|(\\")|\\)*"'
-        t.value = self.get_syn(t, 'STRING', t.value[1:-1])
+        t.value = get_syn('STRING', t.value[1:-1])
         return t
 
     def t_BOOL(self, t):
         r'\#[tf]'
-        t.value = self.get_syn(t, 'BOOL', (t.value == '#t'))
+        t.value = get_syn('BOOL', (t.value == '#t'))
         return t
 
     def t_FLOAT(self, t):
         r'-?[0-9]+\.[0-9]*([eE](-?[0-9]+))?'
-        t.value = self.get_syn(t, 'FLOAT', float(t.value))
+        t.value = get_syn('FLOAT', float(t.value))
         return t
 
     def t_INT(self, t):
         r'-?[0-9]+'
-        t.value = self.get_syn(t, 'INT', int(t.value))
+        t.value = get_syn('INT', int(t.value))
         return t
 
     t_LPAREN = r'\('
@@ -79,12 +72,12 @@ class lispy_parser(object):
         r'[-+]|([a-zA-Z_!$%*/:<=>?~^][a-zA-Z_!$%^*/:<=>?~0-9.+\-^]*)'
         if t.value == 'defun':
             t.type = 'DEFUN'
-            t.value = self.get_syn(t, 'DEFUN', t.value)
-        elif t.value == 'set':
-            t.type = 'SET'
-            t.value = self.get_syn(t, 'SET', t.value)
+            t.value = get_syn('DEFUN', t.value)
+        elif t.value == 'let':
+            t.type = 'LET'
+            t.value = get_syn('LET', t.value)
         else:
-            t.value = self.get_syn(t, 'ID', t.value)
+            t.value = get_syn('ID', t.value)
         return t
 
     # t_SQUOTE = r"'"
@@ -102,7 +95,7 @@ class lispy_parser(object):
     def p_expr(self, p):
         '''expr : atom
                 | defun
-                | set
+                | let
                 | func_call
                 | list
         '''
@@ -111,7 +104,7 @@ class lispy_parser(object):
     def p_func_call(self, p):
         '''func_call : LPAREN ID exprseq RPAREN
         '''
-        p[0] = Syn('FUNC_CALL', {'name': p[2], 'arg_exprs': p[3]})
+        p[0] = get_syn('FUNC_CALL', {'name': p[2], 'arg_exprs': p[3]})
 
     def p_ids(self, p):
         '''ids : ID
@@ -136,32 +129,35 @@ class lispy_parser(object):
                    | expr exprseq
         '''
         if len(p) == 2:
-            p[0] = Syn('EXPRSEQ', [p[1]])
+            p[0] = get_syn('EXPRSEQ', [p[1]])
         else:
-            p[0] = Syn('EXPRSEQ', [p[1]] + p[2].value)
+            p[0] = get_syn('EXPRSEQ', [p[1]] + p[2]['value'])
 
     def p_list(self, p):
         '''list : LPAREN exprseq RPAREN
                 | LPAREN RPAREN
         '''
         if len(p) == 3:
-            p[0] = Syn('LIST', list())
+            p[0] = get_syn('LIST', list())
         else:
-            p[0] = Syn('LIST', p[2].value)
+            p[0] = get_syn('LIST', p[2]['value'])
 
     def p_defun(self, p):
         '''defun : LPAREN DEFUN ID LPAREN ids RPAREN exprseq RPAREN
         '''
-        p[0] = Syn('DEFUN', {'name': p[3], 'args': p[5], 'body': p[7]})
+        p[0] = get_syn('DEFUN', {'name': p[3], 'args': p[5], 'body': p[7]})
 
-    def p_set(self, p):
-        '''set : LPAREN SET ID expr RPAREN
+    def p_let(self, p):
+        '''let : LPAREN LET ID expr RPAREN
         '''
-        p[0] = Syn('SET', {'name': p[3], 'value': p[4]})
+        p[0] = get_syn('LET', {'name': p[3], 'value': p[4]})
 
+import pprint
 
 if __name__ == '__main__':
+    pp = pprint.PrettyPrinter(indent=2, width=60)
     lispy = lispy_parser()
     while(True):
         ast = lispy.parse(input())
-        P.pprint(ast)
+        # pp.pprint(dict(ast._asdict()))
+        pp.pprint(ast)
