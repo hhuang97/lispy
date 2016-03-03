@@ -63,12 +63,77 @@ def divideBuiltin(current_scope, args):
     else:
         return get_syn('INT', quotientI(vals))
 
+
+def modBuiltin(current_scope, args):
+	if len(args) != 2:
+		#TODO ERROR HANDLING
+		return None
+	return get_syn('INT', eval(current_scope, args[0]) % eval(current_scope, args[1]))
+
+
+def notBuiltin(current_scope, args):
+	if len(args) != 1:
+		#TODO ERROR HANDLING
+		pass
+	return get_syn('BOOL', not eval(current_scope, args[0]))
+
+
 def ltBuiltin(current_scope, args):
     if len(args) != 2:
         #TODO ERROR HANDLING
         return None
-    print(eval(current_scope, args[0]))
     return get_syn('BOOL', eval(current_scope, args[0]) < eval(current_scope, args[1]))
+
+
+def lteBuiltin(current_scope, args):
+    if len(args) != 2:
+        #TODO ERROR HANDLING
+        return None
+    return get_syn('BOOL', eval(current_scope, args[0]) <= eval(current_scope, args[1]))
+
+
+def gtBuiltin(current_scope, args):
+    if len(args) != 2:
+        #TODO ERROR HANDLING
+        return None
+    return get_syn('BOOL', eval(current_scope, args[0]) > eval(current_scope, args[1]))
+
+
+def gteBuiltin(current_scope, args):
+    if len(args) != 2:
+        #TODO ERROR HANDLING
+        return None
+    return get_syn('BOOL', eval(current_scope, args[0]) >= eval(current_scope, args[1]))
+
+
+def equalsBuiltin(current_scope, args):
+    if len(args) != 2:
+        #TODO ERROR HANDLING
+        return None
+    return get_syn('BOOL', eval(current_scope, args[0]) == eval(current_scope, args[1]))
+
+
+def notEqualBuiltin(current_scope, args):
+    if len(args) != 2:
+        #TODO ERROR HANDLING
+        return None
+    return get_syn('BOOL', eval(current_scope, args[0]) != eval(current_scope, args[1]))
+
+
+def andBuiltin(current_scope, args):
+    if len(args) != 2:
+        #TODO ERROR HANDLING
+        #TODO NEED TO ONLY COMPARE BOOLS
+        return None
+    return get_syn('BOOL', eval(current_scope, args[0]) and eval(current_scope, args[1]))
+
+
+def orBuiltin(current_scope, args):
+    if len(args) != 2:
+        #TODO ERROR HANDLING
+        #TODO NEED TO ONLY COMPARE BOOLS
+        return None
+    return get_syn('BOOL', eval(current_scope, args[0]) or eval(current_scope, args[1]))
 
 
 def ifBuiltin(current_scope, args):
@@ -133,7 +198,16 @@ if __name__ == '__main__':
         '-': minusBuiltin,
         '*': timesBuiltin,
         '/': divideBuiltin,
+        '%': modBuiltin,
         '<': ltBuiltin,
+        '<=': lteBuiltin,
+        '>': gtBuiltin,
+        '>=': gteBuiltin,
+        '=': equalsBuiltin,
+        '!=': notEqualBuiltin,
+        'and': andBuiltin,
+        'or': orBuiltin,
+        'not': notBuiltin,
         'if': ifBuiltin
     })
     lispy = lispy_parser()
