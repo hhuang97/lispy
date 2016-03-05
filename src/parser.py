@@ -23,7 +23,8 @@ class lispy_parser(object):
         'DEFUN',
         'LET',
         'IF',
-        'ID'
+        'ID',
+        'PRINT'
         # 'SQUOTE',
         # 'COMMENT'
     )
@@ -48,7 +49,7 @@ class lispy_parser(object):
 
     def t_STRING(self, t):
         r'"([^"]|(\\")|\\)*"'
-        t.value = get_syn('STRING', t.value[1:-1])
+        t.value = get_syn('STRING', t.value[1:-1].encode().decode("unicode-escape"))
         return t
 
     def t_BOOL(self, t):
@@ -80,6 +81,9 @@ class lispy_parser(object):
         elif t.value == 'if':
             t.type = 'IF'
             t.value = get_syn('IF', t.value)
+        elif t.value == 'print':
+            t.type = 'PRINT'
+            t.value = get_syn('PRINT', t.value)
         else:
             t.value = get_syn('ID', t.value)
         return t
@@ -93,8 +97,12 @@ class lispy_parser(object):
     # Begin grammar
 
     def p_error(self, p):
-        print("Syntax error at token", p.type)
-        raise SyntaxError
+        if p:
+            print("Syntax error at token", p.type)
+            raise SyntaxError
+        else:
+            print("Unexpected EOF")
+            return
 
     def p_expr(self, p):
         '''expr : atom
@@ -103,6 +111,7 @@ class lispy_parser(object):
                 | func_call
                 | list
                 | if
+                | print
         '''
         p[0] = p[1]
 
@@ -161,6 +170,11 @@ class lispy_parser(object):
         '''if : LPAREN IF expr expr expr RPAREN
         '''
         p[0] = get_syn('IF', {'cond': p[3], 'then': p[4], 'else': p[5]})
+
+    def p_print(self, p):
+        '''print : LPAREN PRINT exprseq RPAREN
+        '''
+        p[0] = get_syn('PRINT', p[3])
 
 import pprint
 

@@ -196,6 +196,12 @@ def eval(current_scope, ast):
                 ret = eval(current_scope, ret)
             return ret
 
+    if ast['type'] == 'PRINT':
+        for val in ast['value']['value']:
+            while type(val) is dict:
+                val = eval(current_scope, val)
+            print(val)
+
     if ast['type'] == 'FUNC_CALL':
         args = ast['value']['arg_exprs']['value']
         for (i, a) in enumerate(args):
@@ -205,24 +211,24 @@ def eval(current_scope, ast):
         return current_scope[ast['value']['name']['value']](current_scope, args)
 
 
+global_scope = {
+    '+': plusBuiltin,
+    '-': minusBuiltin,
+    '*': timesBuiltin,
+    '/': divideBuiltin,
+    '%': modBuiltin,
+    '<': ltBuiltin,
+    '<=': lteBuiltin,
+    '>': gtBuiltin,
+    '>=': gteBuiltin,
+    '=': equalsBuiltin,
+    '!=': notEqualBuiltin,
+    'and': andBuiltin,
+    'or': orBuiltin,
+    'not': notBuiltin
+}
 
 if __name__ == '__main__':
-    global_scope = {
-        '+': plusBuiltin,
-        '-': minusBuiltin,
-        '*': timesBuiltin,
-        '/': divideBuiltin,
-        '%': modBuiltin,
-        '<': ltBuiltin,
-        '<=': lteBuiltin,
-        '>': gtBuiltin,
-        '>=': gteBuiltin,
-        '=': equalsBuiltin,
-        '!=': notEqualBuiltin,
-        'and': andBuiltin,
-        'or': orBuiltin,
-        'not': notBuiltin
-    }
     lispy = lispy_parser()
     while(True):
         ast = lispy.parse(input())
