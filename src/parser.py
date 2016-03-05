@@ -22,6 +22,7 @@ class lispy_parser(object):
         'RPAREN',
         'DEFUN',
         'LET',
+        'IF',
         'ID'
         # 'SQUOTE',
         # 'COMMENT'
@@ -76,6 +77,9 @@ class lispy_parser(object):
         elif t.value == 'let':
             t.type = 'LET'
             t.value = get_syn('LET', t.value)
+        elif t.value == 'if':
+            t.type = 'IF'
+            t.value = get_syn('IF', t.value)
         else:
             t.value = get_syn('ID', t.value)
         return t
@@ -98,6 +102,7 @@ class lispy_parser(object):
                 | let
                 | func_call
                 | list
+                | if
         '''
         p[0] = p[1]
 
@@ -151,6 +156,11 @@ class lispy_parser(object):
         '''let : LPAREN LET ID expr RPAREN
         '''
         p[0] = get_syn('LET', {'name': p[3], 'value': p[4]})
+
+    def p_if(self, p):
+        '''if : LPAREN IF expr expr expr RPAREN
+        '''
+        p[0] = get_syn('IF', {'cond': p[3], 'then': p[4], 'else': p[5]})
 
 import pprint
 

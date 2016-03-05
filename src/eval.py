@@ -135,16 +135,7 @@ def orBuiltin(current_scope, args):
         return None
     return get_syn('BOOL', eval(current_scope, args[0]) or eval(current_scope, args[1]))
 
-
-def ifBuiltin(current_scope, args):
-    if len(args) != 3:
-        # TODO ERROR HANDLING
-        return None
-    cond = eval(current_scope, args[0])
-    if cond:
-        return args[1]
-    else:
-        return args[2]
+import copy
 
 class User_func:
     def __init__(self, args, body):
@@ -152,9 +143,10 @@ class User_func:
         self._body = body
 
     def __call__(self, current_scope, args):
-        new_scope = current_scope
+        new_scope = copy.deepcopy(current_scope)
         for a,b in zip(self._args, args):
-            new_scope.add(a, b)
+            #new_scope.add(a, b)
+            new_scope[a] = b
         for e in self._body[:-1]:
             eval(new_scope, e)
         return eval(new_scope, self._body[-1])
@@ -163,18 +155,21 @@ class User_func:
 
 
 def eval(current_scope, ast):
+    ast = copy.deepcopy(ast)
     if ast['type'] in ['INT', 'FLOAT', 'STRING', 'BOOL']:
         return ast['value']
 
     if ast['type'] == 'ID':
-        return current_scope.get(ast['value'])
+        #return current_scope.get(ast['value'])
+        return current_scope[ast['value']]
 
     if ast['type'] == 'LET':
         name = ast['value']['name']['value']
         value = ast['value']['value']
         if value['type'] in ['FUNC_CALL', 'ID']:
             value = eval(current_scope, value)
-        current_scope.add(name, value)
+        #current_scope.add(name, value)
+        current_scope[name] = value
         return value
 
     if ast['type'] == 'DEFUN':
@@ -182,18 +177,37 @@ def eval(current_scope, ast):
         args = ast['value']['args'] # TODO if any of these aren't IDs crash
         args = [a['value'] for a in args]
         body = ast['value']['body']['value']
-        current_scope.add(function_name, User_func(args, body))
+        #current_scope.add(function_name, User_func(args, body))
+        current_scope[function_name] = User_func(args, body)
 
+    if ast['type'] == 'IF':
+        arg = ast['value']['cond']
+        if arg['type'] in ['FUNC_CALL', 'ID']:
+            arg = eval(current_scope, arg)
+        cond = eval(current_scope, arg)
+        if cond:
+            ret = ast['value']['then']
+            if ret['type'] in ['FUNC_CALL', 'ID', 'DEFUN', 'LET', 'IF']:
+                ret = eval(current_scope, ret)
+            return ret
+        else:
+            ret = ast['value']['else']
+            if ret['type'] in ['FUNC_CALL', 'ID', 'DEFUN', 'LET', 'IF']:
+                ret = eval(current_scope, ret)
+            return ret
 
     if ast['type'] == 'FUNC_CALL':
         args = ast['value']['arg_exprs']['value']
         for (i, a) in enumerate(args):
             if a['type'] in ['FUNC_CALL', 'ID']:
                 args[i] = eval(current_scope, args[i])
-        return current_scope.get(ast['value']['name']['value'])(current_scope, args)
+        #return current_scope.get(ast['value']['name']['value'])(current_scope, args)
+        return current_scope[ast['value']['name']['value']](current_scope, args)
+
+
 
 if __name__ == '__main__':
-    global_scope = scope({
+    global_scope = {
         '+': plusBuiltin,
         '-': minusBuiltin,
         '*': timesBuiltin,
@@ -207,9 +221,8 @@ if __name__ == '__main__':
         '!=': notEqualBuiltin,
         'and': andBuiltin,
         'or': orBuiltin,
-        'not': notBuiltin,
-        'if': ifBuiltin
-    })
+        'not': notBuiltin
+    }
     lispy = lispy_parser()
     while(True):
         ast = lispy.parse(input())

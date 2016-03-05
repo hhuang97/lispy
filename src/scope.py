@@ -9,3 +9,6 @@ class scope:
 
     def add(self, name, val):
         self._defins[name] = val
+
+    def __copy__(self):
+        return scope(self._defins.copy())
