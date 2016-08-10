@@ -3,9 +3,9 @@
 A command line programming language written in python. Intended as a proof of concept and for educational use only.
 
 ## Requirements:
--Python 3
--Familiarity with Linux command line tools
--Superficial Lisp knowledge
+- Python 3
+- Familiarity with Linux command line tools
+- Superficial Lisp knowledge
 
 ## To Run:
 1. '''git clone https://github.com/hhuang97/lispy/'''
